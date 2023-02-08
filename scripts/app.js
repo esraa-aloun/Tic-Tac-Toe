@@ -1,6 +1,6 @@
 function init(){
 
-    let grid = document.querySelector('.grid')    
+    const grid = document.querySelector('.grid')    
     const winnerSpan = document.querySelector('#winner')
     const resetBtn = document.querySelector('#reset')
     const sound = document.querySelector('#sound')
@@ -16,8 +16,6 @@ function init(){
     let count = 0 
     let xScore = 0
     let oScore = 0
-    let winner = ''
-    let disable = false 
     let thereIsWinner = false
 
 
@@ -26,10 +24,9 @@ function init(){
 
 
     function creatGrid(){
-        // this function to creat the grid it will creat each cell by loop then will push into an array then .appendChild() to display them 
+        // this function to creat the grid, it will creat each cell by loop then will push into an array then .appendChild() to display them 
         for(let i = 1; i <= gridCellCount ; i++){
             const cell = document.createElement('div')
-           // cell.textContent = i
             cell.setAttribute('id',`e${i}`)
             cells.push(cell)
             grid.appendChild(cell)
@@ -84,19 +81,13 @@ function init(){
                     count ++  
 
                  whoeWins()
-                    console.log('here stop')
+                  
                     
                     computerTurn()
             
                 }
-                    //else{
-                    //     //alert('resrved')
-
-                    // }
-            }else{
-                    computerTurn()
-                    }
-        
+            }
+                   
 
 
     }
@@ -104,7 +95,7 @@ function init(){
 
     
     function computerTurn(){
-         //   if(count <= 4){ 
+          //  if(count <= 4){ 
                 
                 //console.log('here')
                 if(thereIsWinner == false){
@@ -349,20 +340,14 @@ function init(){
                         computerTurn()
                     }
                 }
-        //}else{
-           // whoeWins()
-       // }   
             }
-
+      
     }
 
     
 
 
     function whoeWins(){
-
-        
-
   
 
         if(    (playerChoices[0]==='X'  && playerChoices[1]==='X' && playerChoices[2]==='X') 
@@ -379,17 +364,17 @@ function init(){
              winnerSpan.textContent = ' Player X wins ' 
              sound.src = 'sounds/xwins.wav'
              sound.play()  
-             disable = true
              PlayerTurn = false
              thereIsWinner = true
              cells.forEach(cell => {
                 console.log('removing event listener')
                 cell.removeEventListener('click', go)
-            })
-               
+            })             
 
 
-        }
+        } 
+        
+      
         if(  
                (playerChoices[0]==='O'  && playerChoices[1]==='O' && playerChoices[2]==='O') 
             || (playerChoices[3]==='O'  && playerChoices[4]==='O' && playerChoices[5]==='O') 
@@ -405,45 +390,43 @@ function init(){
              winnerSpan.textContent = ' Computer Wins '
              sound.src = 'sounds/computerWins.wav'
              sound.play() 
-             disable = true
+            
              thereIsWinner = true
              PlayerTurn = false
 
-            //  cells.forEach(cell => {
-            //     // console.log('rre')
-            //     // cell.removeEventListener('click', go)
-            //     cell.style.pointerEvents = 'none'
-            // })    
-          }    
-      
-     
-    //    if(xScore > oScore ){
-    //         winnerSpan.textContent = ' Player X wins ' 
-    //         sound.src = 'sounds/xwins.wav'
-    //         sound.play()  
+             cells.forEach(cell => {
+                console.log('rre')
+                cell.removeEventListener('click', go)
+               
+            })    
+          } 
+          let sum = 0
+          for( let i = 0 ; i < cells.length ; i++)
+            {
+               if(cells[i].classList.contains('X') || cells[i].classList.contains('O'))
+                sum += 1 
 
-          
-                     
-                
-    //         }
-    //     if(xScore < oScore ){
+            }  
+            if(    (playerChoices[0]==='X'  && playerChoices[1]==='X' && playerChoices[2]==='X') 
+            || (playerChoices[3]==='X'  && playerChoices[4]==='X' && playerChoices[5]==='X') 
+            || (playerChoices[6]==='X'  && playerChoices[7]==='X' && playerChoices[8]==='X') 
+            || (playerChoices[0]==='X'  && playerChoices[3]==='X' && playerChoices[6]==='X') 
+            || (playerChoices[1]==='X'  && playerChoices[4]==='X' && playerChoices[7]==='X') 
+            || (playerChoices[2]==='X'  && playerChoices[5]==='X' && playerChoices[8]==='X') 
+            || (playerChoices[0]==='X'  && playerChoices[4]==='X' && playerChoices[8]==='X') 
+            || (playerChoices[2]==='X'  && playerChoices[4]==='X' && playerChoices[6]==='X') 
+             ){
+                 xScore += 1
               
-    //             winnerSpan.textContent = ' Computer Wins '
-    //             sound.src = 'sounds/computerWins.wav'
-    //             sound.play()
-    //         } 
-       
-        // if (xScore == oScore){ 
-          
-        //     winnerSpan.textContent = ' Draw '
-        //     sound.src = 'sounds/computerWins.wav'
-        //     sound.play()
-        // }
+              }
+           
+            if(sum == 9 && xScore == 0) 
+            {
+                winnerSpan.textContent = ' Draw '
+                sound.src = 'sounds/computerWins.wav'
+                sound.play() 
+            }     
 
- 
-
-
-        
     }
 
     function reset(){
@@ -469,8 +452,8 @@ function init(){
           lastAddedElement 
           sound.pause()
           sound.currentTime = 0
-          sound.src = ''
-          disable = true
+          
+        
 
     }
     resetBtn.addEventListener('click', reset)
@@ -478,10 +461,10 @@ function init(){
 
     creatGrid()
     DetermineBorders()
-    if( disable == false){
+   
     cells.forEach(cell => {
         cell.addEventListener('click', go)
-    })}
+    })
 
 
 }
