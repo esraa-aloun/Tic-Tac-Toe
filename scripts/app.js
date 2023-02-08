@@ -16,6 +16,9 @@ function init(){
     let count = 0 
     let xScore = 0
     let oScore = 0
+    let winner = ''
+    let disable = false 
+    let thereIsWinner = false
 
 
 
@@ -59,9 +62,10 @@ function init(){
     function go(event){ 
    
         
-              if( PlayerTurn === true){
+              if( PlayerTurn === true && thereIsWinner == false){
                            
                 let id= event.target.id
+             
                 if( event.target.classList.contains('blank')){
                     event.target.classList.add('X')
                     event.target.classList.remove('blank')
@@ -79,7 +83,7 @@ function init(){
                     PlayerTurn = false
                     count ++  
 
-                    whoeWins()
+                 whoeWins()
                     console.log('here stop')
                     
                     computerTurn()
@@ -100,9 +104,10 @@ function init(){
 
     
     function computerTurn(){
-            if(count <= 4){ 
+         //   if(count <= 4){ 
                 
                 //console.log('here')
+                if(thereIsWinner == false){
         
     
         
@@ -129,6 +134,7 @@ function init(){
                         // continueToX = true
                         // continueToO = false
                         // whoeWins()
+                        whoeWins()
                         cells.forEach(cell => {
                             cell.addEventListener('click', go)
                         })
@@ -156,6 +162,7 @@ function init(){
                         //console.log(space)
 
                         PlayerTurn = true
+                        whoeWins()
                         cells.forEach(cell => {
                             cell.addEventListener('click', go)
                         })
@@ -181,6 +188,7 @@ function init(){
                         //console.log(space)
 
                         PlayerTurn = true
+                        whoeWins()
                         cells.forEach(cell => {
                             cell.addEventListener('click', go)
                         })
@@ -205,6 +213,7 @@ function init(){
                         //console.log(space)
 
                         PlayerTurn = true
+                        whoeWins()
                         cells.forEach(cell => {
                             cell.addEventListener('click', go)
                         })
@@ -229,6 +238,7 @@ function init(){
                         //console.log(space)
 
                         PlayerTurn = true
+                        whoeWins()
                         cells.forEach(cell => {
                             cell.addEventListener('click', go)
                         })
@@ -253,6 +263,7 @@ function init(){
                         //console.log(space)
 
                         PlayerTurn = true
+                        whoeWins()
                         cells.forEach(cell => {
                             cell.addEventListener('click', go)
                         })
@@ -277,6 +288,7 @@ function init(){
                         //console.log(space)
 
                         PlayerTurn = true
+                        whoeWins()
                         cells.forEach(cell => {
                             cell.addEventListener('click', go)
                         })
@@ -301,6 +313,7 @@ function init(){
                         //console.log(space)
 
                         PlayerTurn = true
+                        whoeWins()
                         cells.forEach(cell => {
                             cell.addEventListener('click', go)
                         })
@@ -325,6 +338,7 @@ function init(){
                         //console.log(space)
 
                         PlayerTurn = true
+                        whoeWins()
                         cells.forEach(cell => {
                             cell.addEventListener('click', go)
                         })
@@ -335,58 +349,96 @@ function init(){
                         computerTurn()
                     }
                 }
-        }else{
-            whoeWins()
-        }   
+        //}else{
+           // whoeWins()
+       // }   
+            }
 
     }
 
+    
+
 
     function whoeWins(){
+
+        
 
   
 
         if(    (playerChoices[0]==='X'  && playerChoices[1]==='X' && playerChoices[2]==='X') 
             || (playerChoices[3]==='X'  && playerChoices[4]==='X' && playerChoices[5]==='X') 
             || (playerChoices[6]==='X'  && playerChoices[7]==='X' && playerChoices[8]==='X') 
+            || (playerChoices[0]==='X'  && playerChoices[3]==='X' && playerChoices[6]==='X') 
+            || (playerChoices[1]==='X'  && playerChoices[4]==='X' && playerChoices[7]==='X') 
+            || (playerChoices[2]==='X'  && playerChoices[5]==='X' && playerChoices[8]==='X') 
             || (playerChoices[0]==='X'  && playerChoices[4]==='X' && playerChoices[8]==='X') 
             || (playerChoices[2]==='X'  && playerChoices[4]==='X' && playerChoices[6]==='X') 
           ){                 
             
-             xScore = xScore+1           
+             xScore = xScore+1 
+             winnerSpan.textContent = ' Player X wins ' 
+             sound.src = 'sounds/xwins.wav'
+             sound.play()  
+             disable = true
+             PlayerTurn = false
+             thereIsWinner = true
+             cells.forEach(cell => {
+                console.log('removing event listener')
+                cell.removeEventListener('click', go)
+            })
+               
+
 
         }
         if(  
                (playerChoices[0]==='O'  && playerChoices[1]==='O' && playerChoices[2]==='O') 
             || (playerChoices[3]==='O'  && playerChoices[4]==='O' && playerChoices[5]==='O') 
-            || (playerChoices[6]==='O'  && playerChoices[7]==='O' && playerChoices[8]==='O') 
+            || (playerChoices[6]==='O'  && playerChoices[7]==='O' && playerChoices[8]==='O')
+            || (playerChoices[0]==='O'  && playerChoices[3]==='O' && playerChoices[6]==='O') 
+            || (playerChoices[1]==='O'  && playerChoices[4]==='O' && playerChoices[7]==='O') 
+            || (playerChoices[2]==='O'  && playerChoices[5]==='O' && playerChoices[8]==='O')  
             || (playerChoices[0]==='O'  && playerChoices[4]==='O' && playerChoices[8]==='O') 
             || (playerChoices[2]==='O'  && playerChoices[4]==='O' && playerChoices[6]==='O') 
          ){        
             
-             oScore = oScore+1         
+             oScore = oScore+1    
+             winnerSpan.textContent = ' Computer Wins '
+             sound.src = 'sounds/computerWins.wav'
+             sound.play() 
+             disable = true
+             thereIsWinner = true
+             PlayerTurn = false
+
+            //  cells.forEach(cell => {
+            //     // console.log('rre')
+            //     // cell.removeEventListener('click', go)
+            //     cell.style.pointerEvents = 'none'
+            // })    
           }    
       
      
-       if(xScore > oScore ){
-            winnerSpan.textContent = ' Player X wins ' 
-            sound.src = 'sounds/xwins.wav'
-            sound.play()           
-                
-            }
-        if(xScore < oScore ){
-              
-                winnerSpan.textContent = ' Computer Wins '
-                sound.src = 'sounds/computerWins.wav'
-                sound.play()
-            } 
-       
-        if (xScore == oScore){ 
+    //    if(xScore > oScore ){
+    //         winnerSpan.textContent = ' Player X wins ' 
+    //         sound.src = 'sounds/xwins.wav'
+    //         sound.play()  
+
           
-            winnerSpan.textContent = ' Draw '
-            sound.src = 'sounds/computerWins.wav'
-            sound.play()
-        }
+                     
+                
+    //         }
+    //     if(xScore < oScore ){
+              
+    //             winnerSpan.textContent = ' Computer Wins '
+    //             sound.src = 'sounds/computerWins.wav'
+    //             sound.play()
+    //         } 
+       
+        // if (xScore == oScore){ 
+          
+        //     winnerSpan.textContent = ' Draw '
+        //     sound.src = 'sounds/computerWins.wav'
+        //     sound.play()
+        // }
 
  
 
@@ -418,6 +470,7 @@ function init(){
           sound.pause()
           sound.currentTime = 0
           sound.src = ''
+          disable = true
 
     }
     resetBtn.addEventListener('click', reset)
@@ -425,9 +478,10 @@ function init(){
 
     creatGrid()
     DetermineBorders()
+    if( disable == false){
     cells.forEach(cell => {
         cell.addEventListener('click', go)
-    })
+    })}
 
 
 }
