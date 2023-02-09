@@ -1,7 +1,7 @@
 
 body{
     
-    background-image: url('https://github.com/esraa-aloun/Tic-Tac-Toe/blob/main/sounds/bg.gif');      
+    background-image: url('../sounds/bg.gif');      
     background-size: cover;       
     display: flex;
     justify-content: center;
